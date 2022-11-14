@@ -64,7 +64,6 @@ const decryptSecretPhrase = async () => {
 
 const main = async () => {
     const mode = await askQuestion('Encrypt or Decrypt? (e/d): ')
-    console.log(mode)
     if (mode === 'e') {
         return createAndEncrypt()
     }

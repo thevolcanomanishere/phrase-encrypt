@@ -2,6 +2,7 @@ const crypto = require('crypto')
 const bip39 = require('bip39')
 const fs = require('fs')
 const readline = require('readline');
+const qrcode = require('qrcode-terminal');
 
 const pad = str => {
     if (str.length > 32) {
@@ -52,6 +53,9 @@ const createAndEncrypt = async () => {
     fs.writeFileSync('SecretPhrase.json', JSON.stringify(encryptedSecretPhrase))
     console.log("Your secret phrase has been encrypted and saved to SecretPhrase.json")
     console.log("Note: You MUST use this tool to decrypt your secret phrase in the future.")
+    console.log("\nScan this QR Code with your wallet to import your account.")
+    qrcode.generate(secretPhrase, {small: true});
+
 }
 
 const decryptSecretPhrase = async () => {
@@ -60,6 +64,8 @@ const decryptSecretPhrase = async () => {
     const encryptedSecretPhrase = JSON.parse(fs.readFileSync('SecretPhrase.json'))
     const decryptedSecretPhrase = decrypt(encryptedSecretPhrase, key)
     console.log('Your decrypted secret phrase is: ', decryptedSecretPhrase)
+    console.log("\nScan this QR Code with your wallet to import your account.")
+    qrcode.generate(decryptedSecretPhrase,  {small: true});
 }
 
 const main = async () => {

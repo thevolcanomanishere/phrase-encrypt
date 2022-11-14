@@ -25,6 +25,6 @@ Decrypting
 
 ## TODO GUI
 - [X] QR code generation
-- [] Have someone who knows their stuff to look at implementation
-- [] Add GUI
-- [] Option for 24 word phrase
+- [ ] Have someone who knows their stuff to look at implementation
+- [ ] Add GUI
+- [ ] Option for 24 word phrase

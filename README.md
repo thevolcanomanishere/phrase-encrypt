@@ -2,6 +2,11 @@
 
 Naive implementation of a simple crypto secret phrase creation and encryption. Includes QR code generation for easier import into your wallet. No need to copy and paste! 
 
+Features: 
+- AES-256 encryption
+- (Argon2)[https://en.wikipedia.org/wiki/Argon2] key derivation function
+- Outputs QR code in the terminal for easy wallet importing
+
 Why?
 - Many people store their secret phrase unencrypted in their notes, Google docs, etc.
 - Far easier to store a simple JSON file.

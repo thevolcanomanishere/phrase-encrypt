@@ -3,19 +3,27 @@ const bip39 = require('bip39')
 const fs = require('fs')
 const readline = require('readline');
 const qrcode = require('qrcode-terminal');
-
-const pad = str => {
-    if (str.length > 32) {
-        return str.substring(0, 32)
-    }
-    return str.padEnd(32, ' ')
-}
+const argon2 = require('argon2-browser');
 
 const algorithm = 'aes-256-ctr'
 
-const encrypt = (secretPhrase, password) => {
+const createHashedPassword = async (password, iv) => {
+    const numIterations = 1000;
+    console.log(`\nHashing password with ${numIterations} iterations\nThis will take a few seconds...`)
+    const { hash } = await argon2.hash({
+        pass: password,
+        time: numIterations,
+        mem: 4096,
+        salt: iv.toString('hex'),
+        hashLen: 32
+      });
+      return hash;
+}
+
+const encrypt = async (secretPhrase, password) => {
   const iv = crypto.randomBytes(16)
-  const cipher = crypto.createCipheriv(algorithm, password, iv)
+  const hash = await createHashedPassword(password, iv)
+  const cipher = crypto.createCipheriv(algorithm, hash, iv)
   const encrypted = Buffer.concat([cipher.update(secretPhrase), cipher.final()])
   const encryptedSecretPhrase = {
     iv: iv.toString('hex'),
@@ -45,10 +53,9 @@ const askQuestion = (query) => {
 const createAndEncrypt = async () => {
     const password = await askQuestion('Enter password to encrypt your secret pharse: ')
     console.log('Your secret key is: ', password)
-    const key = pad(password)
     const secretPhrase = bip39.generateMnemonic();
     console.log('Your secret phrase is: ', secretPhrase)
-    const encryptedSecretPhrase = encrypt(secretPhrase, key)
+    const encryptedSecretPhrase = await encrypt(secretPhrase, password)
     console.log('Your encrypted secret phrase is: ', encryptedSecretPhrase)
     fs.writeFileSync('SecretPhrase.json', JSON.stringify(encryptedSecretPhrase))
     console.log("Your secret phrase has been encrypted and saved to SecretPhrase.json")
@@ -61,9 +68,9 @@ const createAndEncrypt = async () => {
 
 const decryptSecretPhrase = async () => {
     const password = await askQuestion('Enter password to decrypt your secret pharse: ')
-    const key = pad(password)
     const encryptedSecretPhrase = JSON.parse(fs.readFileSync('SecretPhrase.json'))
-    const decryptedSecretPhrase = decrypt(encryptedSecretPhrase, key)
+    const hash = await createHashedPassword(password, encryptedSecretPhrase.iv)
+    const decryptedSecretPhrase = decrypt(encryptedSecretPhrase, hash)
     console.log('Your decrypted secret phrase is: ', decryptedSecretPhrase)
     console.log("\nScan this QR Code with your wallet to import your account.")
     qrcode.generate(decryptedSecretPhrase,  {small: true});

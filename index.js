@@ -5,7 +5,7 @@ const readline = require('readline');
 const qrcode = require('qrcode-terminal');
 const argon2 = require('argon2-browser');
 
-const algorithm = 'aes-256-ctr'
+const algorithm = 'aes-256-gcm'
 
 const createHashedPassword = async (password, iv) => {
     const numIterations = 1000;
@@ -27,13 +27,14 @@ const encrypt = async (secretPhrase, password) => {
   const encrypted = Buffer.concat([cipher.update(secretPhrase), cipher.final()])
   const encryptedSecretPhrase = {
     iv: iv.toString('hex'),
-    content: encrypted.toString('hex')
+    content: encrypted.toString('hex'),
+    tag: cipher.getAuthTag()
   }
     return encryptedSecretPhrase;
 }
 
 const decrypt = (encryptedJSON, key) => {
-  const decipher = crypto.createDecipheriv(algorithm, key, Buffer.from(encryptedJSON.iv, 'hex'))
+  const decipher = crypto.createDecipheriv(algorithm, key, Buffer.from(encryptedJSON.iv, 'hex')).setAuthTag(Buffer.from(encryptedJSON.tag, 'hex'))
   const decrpyted = Buffer.concat([decipher.update(Buffer.from(encryptedJSON.content, 'hex')), decipher.final()])
   return decrpyted.toString()
 }

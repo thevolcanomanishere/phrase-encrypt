@@ -4,7 +4,7 @@ Naive implementation of a simple crypto secret phrase creation and encryption. I
 
 Features: 
 - AES-256 encryption
-- (Argon2)[https://en.wikipedia.org/wiki/Argon2] key derivation function
+- [Argon2](https://en.wikipedia.org/wiki/Argon2) key derivation function
 - Outputs QR code in the terminal for easy wallet importing
 
 Why?

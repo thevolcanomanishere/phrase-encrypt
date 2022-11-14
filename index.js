@@ -56,7 +56,6 @@ const createAndEncrypt = async () => {
     const secretPhrase = bip39.generateMnemonic();
     console.log('Your secret phrase is: ', secretPhrase)
     const encryptedSecretPhrase = await encrypt(secretPhrase, password)
-    console.log('Your encrypted secret phrase is: ', encryptedSecretPhrase)
     fs.writeFileSync('SecretPhrase.json', JSON.stringify(encryptedSecretPhrase))
     console.log("Your secret phrase has been encrypted and saved to SecretPhrase.json")
     console.log("Now you can safely backup SecretPhrase.json to Google Drive, WhatsApp, iCloud, etc.")

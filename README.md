@@ -1,6 +1,6 @@
 # Simple crypto secret phrase creation and encryption
 
-Naive implementation of a simple crypto secret phrase creation and encryption.
+Naive implementation of a simple crypto secret phrase creation and encryption. Includes QR code generation for easier import into your wallet. No need to copy and paste! 
 
 Why?
 - Many people store their secret phrase unencrypted in their notes, Google docs, etc.
@@ -22,3 +22,9 @@ Encrypting
 
 Decrypting
 ![Screenshot](images/decrypt.png)
+
+## TODO GUI
+- [X] QR code generation
+- [] Have someone who knows their stuff to look at implementation
+- [] Add GUI
+- [] Option for 24 word phrase

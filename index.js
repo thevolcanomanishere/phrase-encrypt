@@ -52,7 +52,8 @@ const createAndEncrypt = async () => {
     console.log('Your encrypted secret phrase is: ', encryptedSecretPhrase)
     fs.writeFileSync('SecretPhrase.json', JSON.stringify(encryptedSecretPhrase))
     console.log("Your secret phrase has been encrypted and saved to SecretPhrase.json")
-    console.log("Note: You MUST use this tool to decrypt your secret phrase in the future.")
+    console.log("Now you can safely backup SecretPhrase.json to Google Drive, WhatsApp, iCloud, etc.")
+    console.error("Note: You MUST use this tool to decrypt your secret phrase in the future.")
     console.log("\nScan this QR Code with your wallet to import your account.")
     qrcode.generate(secretPhrase, {small: true});
 

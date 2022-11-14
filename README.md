@@ -11,3 +11,6 @@ Naive implementation of a simple crypto secret phrase creation and encryption.
 ```bash
 $ node index.js
 ```
+
+
+![Screenshot](images/Screenshot.png)

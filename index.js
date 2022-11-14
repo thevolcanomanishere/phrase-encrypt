@@ -51,6 +51,7 @@ const createAndEncrypt = async () => {
     console.log('Your encrypted secret phrase is: ', encryptedSecretPhrase)
     fs.writeFileSync('SecretPhrase.json', JSON.stringify(encryptedSecretPhrase))
     console.log("Your secret phrase has been encrypted and saved to SecretPhrase.json")
+    console.log("Note: You MUST use this tool to decrypt your secret phrase in the future.")
 }
 
 const decryptSecretPhrase = async () => {
